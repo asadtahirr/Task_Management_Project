@@ -8,10 +8,10 @@
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public virtual List<Project> AssignedProjects { get; set; }
-        public virtual List<Task> AssignedTasks { get; set; }
+        public virtual List<ProjectTask> AssignedTasks { get; set; }
         public virtual List<Project> CreatedProjects { get; set; }
-        public virtual List<Task> CreatedTasks { get; set; }
-        public virtual List<Task> WatchedTasks { get; set; }
+        public virtual List<ProjectTask> CreatedTasks { get; set; }
+        public virtual List<ProjectTask> WatchedTasks { get; set; }
         public virtual List<Comment> CreatedComments { get; set; }
 
         public User()
@@ -20,10 +20,10 @@
             CreatedAt = DateTime.Now;
 
             AssignedProjects = new List<Project>();
-            AssignedTasks = new List<Task>();
+            AssignedTasks = new List<ProjectTask>();
             CreatedProjects = new List<Project>();
-            CreatedTasks = new List<Task>();
-            WatchedTasks = new List<Task>();
+            CreatedTasks = new List<ProjectTask>();
+            WatchedTasks = new List<ProjectTask>();
             CreatedComments = new List<Comment>();
         }
     }

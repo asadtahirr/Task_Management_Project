@@ -2,10 +2,17 @@
 
 namespace project_management_system.Models
 {
+    public enum Priority : int
+    {
+        Low = 0,
+        Medium = 1,
+        High = 2,
+    }
+
     public class ProjectTask : Domain
     {
         public string Title { get; set; }
-        public string Priority { get; set; }
+        public Priority Priority { get; set; }
         public decimal RequiredHours { get; set; }
         public bool Completed { get; set; }
 

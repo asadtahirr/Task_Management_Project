@@ -1,29 +1,41 @@
-﻿namespace project_management_system.Models
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace project_management_system.Models
 {
-    public class User
+    public class User : IdentityUser 
     {
-        public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
+
+        [InverseProperty("Developers")]
         public virtual List<Project> AssignedProjects { get; set; }
-        public virtual List<ProjectTask> AssignedTasks { get; set; }
+
+        [InverseProperty("AssignedDeveloper")]
+        public virtual List<ProjectTask> AssignedProjectTasks { get; set; }
+
+        [InverseProperty("CreatedBy")]
         public virtual List<Project> CreatedProjects { get; set; }
-        public virtual List<ProjectTask> CreatedTasks { get; set; }
-        public virtual List<ProjectTask> WatchedTasks { get; set; }
+
+        [InverseProperty("CreatedBy")]
+        public virtual List<ProjectTask> CreatedProjectTasks { get; set; }
+
+        [InverseProperty("Watchers")]
+        public virtual List<ProjectTask> WatchedProjectTasks { get; set; }
+
+        [InverseProperty("CreatedBy")]
         public virtual List<Comment> CreatedComments { get; set; }
 
-        public User()
+        public User() : base()
         {
-            Id = Guid.NewGuid().ToString();
             CreatedAt = DateTime.Now;
-
             AssignedProjects = new List<Project>();
-            AssignedTasks = new List<ProjectTask>();
+            AssignedProjectTasks = new List<ProjectTask>();
             CreatedProjects = new List<Project>();
-            CreatedTasks = new List<ProjectTask>();
-            WatchedTasks = new List<ProjectTask>();
+            CreatedProjectTasks = new List<ProjectTask>();
+            WatchedProjectTasks = new List<ProjectTask>();
             CreatedComments = new List<Comment>();
         }
     }

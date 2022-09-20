@@ -6,7 +6,7 @@ namespace project_management_system.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        public DbSet<ProjectTask> Tasks { get; set; }
+        public DbSet<ProjectTask> ProjectTasks { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Comment> Comments { get; set; }

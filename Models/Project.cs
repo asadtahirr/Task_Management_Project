@@ -1,22 +1,24 @@
-﻿namespace project_management_system.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace project_management_system.Models
 {
-    public class Project
+    public class Project : Domain
     {
-        public string Id { get; set; }
         public string Title { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        
-        public virtual List<Task> Tasks { get; set; }
+
+        [InverseProperty("Project")]
+        public virtual List<ProjectTask> ProjectTasks { get; set; }
+
+        [InverseProperty("AssignedProjects")]
         public virtual List<User> Developers { get; set; }
         public string CreatedById { get; set; }
+
+        [InverseProperty("CreatedProjects")]
         public virtual User CreatedBy { get; set; }
 
-        public Project()
+        public Project() : base()
         {
-            Id = Guid.NewGuid().ToString(); 
-            CreatedAt = DateTime.Now;
-            Tasks = new List<Task>();
+            ProjectTasks = new List<ProjectTask>();
             Developers = new List<User>();
         }
     }

@@ -1,21 +1,21 @@
-﻿namespace project_management_system.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace project_management_system.Models
 {
-    public class Comment 
-    {
-        public string Id { get; set; }
+    public class Comment : Domain
+    { 
         public string Body { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        
+
         public string TaskId { get; set; }
-        public virtual Task Task { get; set; }
+
+        [InverseProperty("Comments")]
+        public virtual ProjectTask ProjectTask { get; set; }
         public string CreatedById { get; set; }
+
+        [InverseProperty("CreatedComments")]
         public virtual User CreatedBy { get; set; }
 
-        public Comment()
-        {
-            Id = Guid.NewGuid().ToString(); 
-            CreatedAt = DateTime.Now;
-        }
+        public Comment() : base()
+        {}
     }
 }

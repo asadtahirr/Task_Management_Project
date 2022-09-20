@@ -1,6 +1,6 @@
 ﻿namespace project_management_system.Models
 {
-    public class Task
+    public class ProjectTask
     {
         public string Id { get; set; }
         public string Title { get; set; }
@@ -18,7 +18,7 @@
         public string CreatedById { get; set; }
         public virtual User CreatedBy { get; set; }
 
-        public Task()
+        public ProjectTask()
         {
             Id = Guid.NewGuid().ToString();
             CreatedAt = DateTime.Now;

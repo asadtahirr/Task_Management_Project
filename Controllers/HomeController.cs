@@ -18,9 +18,16 @@ namespace project_management_system.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Publish()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult PublishProject()
+        {
+
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -28,5 +35,7 @@ namespace project_management_system.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
     }
 }

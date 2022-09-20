@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Publish";
+}
+
+<h1>Publish the project with the table:</h1>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="PublishProject" method="post">
+            Title:  <input /> <br /><br />
+            Detail: <input /><br /><br />
+            Required Hours: <input type="number"/><br /><br />
+            <button type="submit">Publish</button>
+        </form>
+    </div>
+</div>

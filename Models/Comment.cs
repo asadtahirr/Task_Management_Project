@@ -6,7 +6,7 @@ namespace project_management_system.Models
     { 
         public string Body { get; set; }
 
-        public string TaskId { get; set; }
+        public string ProjectTaskId { get; set; }
 
         [InverseProperty("Comments")]
         public virtual ProjectTask ProjectTask { get; set; }

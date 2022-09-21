@@ -1,4 +1,6 @@
-﻿namespace project_management_system.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace project_management_system.Models
 {
     public class ProjectTask
     {
@@ -11,12 +13,14 @@
         public DateTime? UpdatedAt { get; set; }
 
         public virtual Project Project { get; set; }
+        [ForeignKey("AssignedDeveloper")]
         public string AssignedDeveloperId { get; set; }
         public virtual User AssignedDeveloper { get; set; }
         public virtual List<User> Watchers { get; set; }
         public virtual List<Comment> Comments { get; set; }
-        public string CreatedById { get; set; }
-        public virtual User CreatedBy { get; set; }
+        /*[ForeignKey("TaskCreatedDeveloper")]
+        public string TaskCreatedById { get; set; }
+        public virtual User TaskCreatedBy { get; set; }*/
 
         public ProjectTask()
         {

@@ -8,7 +8,7 @@
         public DateTime? UpdatedAt { get; set; }
         
         public string TaskId { get; set; }
-        public virtual Task Task { get; set; }
+        public virtual ProjectTask Task { get; set; }
         public string CreatedById { get; set; }
         public virtual User CreatedBy { get; set; }
 

@@ -1,4 +1,6 @@
-﻿namespace project_management_system.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace project_management_system.Models
 {
     public enum Priority : int
     {
@@ -16,7 +18,6 @@
 
         [InverseProperty("ProjectTasks")]
         public virtual Project Project { get; set; }
-        [ForeignKey("AssignedDeveloper")]
         public string AssignedDeveloperId { get; set; }
 
         [InverseProperty("AssignedProjectTasks")]

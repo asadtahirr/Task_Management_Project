@@ -16,6 +16,9 @@ namespace project_management_system.Models
         public decimal RequiredHours { get; set; }
         public bool Completed { get; set; }
 
+        [ForeignKey("Project")]
+        public string ProjectId { get; set; }
+
         [InverseProperty("ProjectTasks")]
         public virtual Project Project { get; set; }
 

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace project_management_system.Data.Migrations
 {
-    public partial class AddTables : Migration
+    public partial class CreateTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -90,37 +90,51 @@ namespace project_management_system.Data.Migrations
                         column: x => x.CreatedById,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ProjectTasks_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "ProjectUser",
                 columns: table => new
                 {
-                    AssignedProjectsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    DevelopersId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    AssignedDevelopersId1 = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AssignedProjectsId1 = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AssignedDevelopersId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AssignedProjectsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectUser", x => new { x.AssignedProjectsId, x.DevelopersId });
+                    table.PrimaryKey("PK_ProjectUser", x => new { x.AssignedDevelopersId1, x.AssignedProjectsId1 });
                     table.ForeignKey(
-                        name: "FK_ProjectUser_AspNetUsers_DevelopersId",
-                        column: x => x.DevelopersId,
+                        name: "FK_ProjectUser_AspNetUsers_AssignedDevelopersId1",
+                        column: x => x.AssignedDevelopersId1,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ProjectUser_Projects_AssignedProjectsId",
+                        name: "FK_ProjectUser_AspNetUsers_AssignedProjectsId",
                         column: x => x.AssignedProjectsId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectUser_Projects_AssignedDevelopersId",
+                        column: x => x.AssignedDevelopersId,
                         principalTable: "Projects",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectUser_Projects_AssignedProjectsId1",
+                        column: x => x.AssignedProjectsId1,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -166,13 +180,13 @@ namespace project_management_system.Data.Migrations
                         column: x => x.WatchersId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ProjectTaskUser_ProjectTasks_WatchedProjectTasksId",
                         column: x => x.WatchedProjectTasksId,
                         principalTable: "ProjectTasks",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -211,9 +225,19 @@ namespace project_management_system.Data.Migrations
                 column: "WatchersId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectUser_DevelopersId",
+                name: "IX_ProjectUser_AssignedDevelopersId",
                 table: "ProjectUser",
-                column: "DevelopersId");
+                column: "AssignedDevelopersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectUser_AssignedProjectsId",
+                table: "ProjectUser",
+                column: "AssignedProjectsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectUser_AssignedProjectsId1",
+                table: "ProjectUser",
+                column: "AssignedProjectsId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

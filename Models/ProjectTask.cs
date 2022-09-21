@@ -18,6 +18,8 @@ namespace project_management_system.Models
 
         [InverseProperty("ProjectTasks")]
         public virtual Project Project { get; set; }
+
+        [ForeignKey("AssignedDeveloper")]
         public string AssignedDeveloperId { get; set; }
 
         [InverseProperty("AssignedProjectTasks")]
@@ -28,6 +30,8 @@ namespace project_management_system.Models
 
         [InverseProperty("ProjectTask")]
         public virtual List<Comment> Comments { get; set; }
+
+        [ForeignKey("CreatedBy")]
         public string CreatedById { get; set; }
 
         [InverseProperty("CreatedProjectTasks")]

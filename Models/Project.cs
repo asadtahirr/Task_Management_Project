@@ -11,6 +11,8 @@ namespace project_management_system.Models
 
         [InverseProperty("AssignedProjects")]
         public virtual List<User> Developers { get; set; }
+
+        [ForeignKey("CreatedBy")]
         public string CreatedById { get; set; }
 
         [InverseProperty("CreatedProjects")]

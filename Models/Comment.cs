@@ -3,10 +3,10 @@
 namespace project_management_system.Models
 {
     public class Comment : Domain
-    { 
+    {
         public string Body { get; set; }
 
-        public string ProjectTaskId { get; set; }
+        public string TaskId { get; set; }
 
         [InverseProperty("Comments")]
         public virtual ProjectTask ProjectTask { get; set; }
@@ -16,6 +16,6 @@ namespace project_management_system.Models
         public virtual User CreatedBy { get; set; }
 
         public Comment() : base()
-        {}
+        { }
     }
 }

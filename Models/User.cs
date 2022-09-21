@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace project_management_system.Models
 {
-    public class User : IdentityUser 
+    public class User : IdentityUser
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

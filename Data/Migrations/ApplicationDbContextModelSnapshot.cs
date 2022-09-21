@@ -355,15 +355,27 @@ namespace project_management_system.Data.Migrations
 
             modelBuilder.Entity("ProjectUser", b =>
                 {
+                    b.Property<string>("AssignedDevelopersId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AssignedProjectsId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AssignedDevelopersId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("AssignedProjectsId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("DevelopersId")
-                        .HasColumnType("nvarchar(450)");
+                    b.HasKey("AssignedDevelopersId1", "AssignedProjectsId1");
 
-                    b.HasKey("AssignedProjectsId", "DevelopersId");
+                    b.HasIndex("AssignedDevelopersId");
 
-                    b.HasIndex("DevelopersId");
+                    b.HasIndex("AssignedProjectsId");
+
+                    b.HasIndex("AssignedProjectsId1");
 
                     b.ToTable("ProjectUser");
                 });
@@ -479,13 +491,13 @@ namespace project_management_system.Data.Migrations
                     b.HasOne("project_management_system.Models.User", "CreatedBy")
                         .WithMany("CreatedProjectTasks")
                         .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("project_management_system.Models.Project", "Project")
                         .WithMany("ProjectTasks")
                         .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AssignedDeveloper");
@@ -500,13 +512,13 @@ namespace project_management_system.Data.Migrations
                     b.HasOne("project_management_system.Models.ProjectTask", null)
                         .WithMany()
                         .HasForeignKey("WatchedProjectTasksId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("project_management_system.Models.User", null)
                         .WithMany()
                         .HasForeignKey("WatchersId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -514,14 +526,26 @@ namespace project_management_system.Data.Migrations
                 {
                     b.HasOne("project_management_system.Models.Project", null)
                         .WithMany()
-                        .HasForeignKey("AssignedProjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("AssignedDevelopersId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("project_management_system.Models.User", null)
                         .WithMany()
-                        .HasForeignKey("DevelopersId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("AssignedDevelopersId1")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("project_management_system.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("AssignedProjectsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("project_management_system.Models.Project", null)
+                        .WithMany()
+                        .HasForeignKey("AssignedProjectsId1")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

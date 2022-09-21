@@ -10,7 +10,7 @@ namespace project_management_system.Models
         public virtual List<ProjectTask> ProjectTasks { get; set; }
 
         [InverseProperty("AssignedProjects")]
-        public virtual List<User> Developers { get; set; }
+        public virtual List<User> AssignedDevelopers { get; set; }
 
         [ForeignKey("CreatedBy")]
         public string CreatedById { get; set; }
@@ -21,7 +21,7 @@ namespace project_management_system.Models
         public Project() : base()
         {
             ProjectTasks = new List<ProjectTask>();
-            Developers = new List<User>();
+            AssignedDevelopers = new List<User>();
         }
     }
 }

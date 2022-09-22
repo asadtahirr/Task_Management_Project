@@ -1,0 +1,25 @@
+﻿@model IndexViewModel
+
+@{
+    List<string> myList = new List<string>() { "Hi", "Hello" };
+}
+
+<h1>Projects</h1>
+
+@foreach (ProjectDetailsViewModel projectDetails in Model.Projects)
+{
+    <div>
+        <p>@projectDetails.Id</p>
+        <p>@projectDetails.Title</p>
+        <p>@projectDetails.CreatedByName</p>
+        <p>@projectDetails.CreatedById</p>
+        <p>@projectDetails.NumberOfProjectTasks</p>
+
+        @foreach (ProjectTask projectTask in projectDetails.ProjectTasks)
+        {
+            <p>@projectTask.Title</p>
+            
+        }
+    </div>
+
+}

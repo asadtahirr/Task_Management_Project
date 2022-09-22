@@ -14,13 +14,13 @@ namespace project_management_system.Data
 
             RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            string roleName1 = "Administrator";
+            string administratorRoleName = "Administrator";
 
-            IdentityRole role1 = await RoleManager.FindByNameAsync(roleName1);
+            IdentityRole role1 = await RoleManager.FindByNameAsync(administratorRoleName);
 
             if (role1 == null)
             {
-                role1 = new IdentityRole(roleName1);
+                role1 = new IdentityRole(administratorRoleName);
 
                 IdentityResult createRole1 = await RoleManager.CreateAsync(role1);
 
@@ -34,13 +34,13 @@ namespace project_management_system.Data
                 }
             }
 
-            string roleName2 = "Project Manager";
+            string projectManagerRoleName = "Project Manager";
 
-            IdentityRole role2 = await RoleManager.FindByNameAsync(roleName2);
+            IdentityRole role2 = await RoleManager.FindByNameAsync(projectManagerRoleName);
 
             if (role2 == null)
             {
-                role2 = new IdentityRole(roleName2);
+                role2 = new IdentityRole(projectManagerRoleName);
 
                 IdentityResult createRole2 = await RoleManager.CreateAsync(role2);
 
@@ -54,13 +54,13 @@ namespace project_management_system.Data
                 }
             }
 
-            string roleName3 = "Developer";
+            string developerRoleName = "Developer";
 
-            IdentityRole role3 = await RoleManager.FindByNameAsync(roleName3);
+            IdentityRole role3 = await RoleManager.FindByNameAsync(developerRoleName);
 
             if (role3 == null)
             {
-                role3 = new IdentityRole(roleName3);
+                role3 = new IdentityRole(developerRoleName);
 
                 IdentityResult createRole3 = await RoleManager.CreateAsync(role3);
 
@@ -95,25 +95,197 @@ namespace project_management_system.Data
                 {
                     Console.WriteLine($"User {userName1} saved to database.");
 
-                    bool isUser1Administrator = await UserManager.IsInRoleAsync(user1, roleName1);
+                    bool isUser1Administrator = await UserManager.IsInRoleAsync(user1, administratorRoleName);
 
                     if (!isUser1Administrator)
                     {
-                        IdentityResult assignUser1AsAdministrator = await UserManager.AddToRoleAsync(user1, roleName1);
+                        IdentityResult assignUser1AsAdministrator = await UserManager.AddToRoleAsync(user1, administratorRoleName);
 
                         if (assignUser1AsAdministrator.Succeeded)
                         {
-                            Console.WriteLine($"{userName1} is assigned to role {roleName1}");
+                            Console.WriteLine($"{userName1} is assigned to role {administratorRoleName}");
                         }
                         else
                         {
-                            Console.WriteLine($"Could not assign {userName1} to role {roleName1}");
+                            Console.WriteLine($"Could not assign {userName1} to role {administratorRoleName}");
                         }
                     }
                 }
                 else
                 {
                     Console.WriteLine($"Could not save user {userName1}");
+                }
+            }
+
+
+            string userName2 = "pm1@pmsystem.com";
+
+            User user2 = await UserManager.FindByNameAsync(userName2);
+
+            if (user2 == null)      
+            {
+                user2 = new User()
+                {
+                    UserName = userName2,
+                    Email = userName2,
+                    EmailConfirmed = true,
+                    FirstName = "Derral",
+                    LastName = "Monias",
+                };
+
+                IdentityResult createUser2 = await UserManager.CreateAsync(user2, "Pass123$");
+
+                if (createUser2.Succeeded)
+                {
+                    Console.WriteLine($"User {userName2} saved to database.");
+
+                    bool isUser2ProjectManager = await UserManager.IsInRoleAsync(user2, projectManagerRoleName);
+
+                    if (!isUser2ProjectManager)
+                    {
+                        IdentityResult assignUser2AsProjectManager = await UserManager.AddToRoleAsync(user2, projectManagerRoleName);
+
+                        if (assignUser2AsProjectManager.Succeeded)
+                        {
+                            Console.WriteLine($"{userName2} is assigned to role {projectManagerRoleName}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Could not assign {userName2} to role {projectManagerRoleName}");
+                        }
+                    }
+                }            
+                else
+                {
+                    Console.WriteLine($"Could not save user {userName2}");
+                }
+            }
+
+            string userName3 = "pm2@pmsystem.com";
+
+            User user3 = await UserManager.FindByNameAsync(userName3);
+
+            if (user3 == null)
+            {
+                user3 = new User()
+                {
+                    UserName = userName3,
+                    Email = userName3,
+                    EmailConfirmed = true,
+                    FirstName = "Daly",
+                    LastName = "Harper",
+                };
+
+                IdentityResult createUser3 = await UserManager.CreateAsync(user3, "Pass123$");
+
+                if (createUser3.Succeeded)
+                {
+                    Console.WriteLine($"User {userName3} saved to database.");
+
+                    bool isUser3ProjectManager = await UserManager.IsInRoleAsync(user3, projectManagerRoleName);
+
+                    if (!isUser3ProjectManager)
+                    {
+                        IdentityResult assignUser3AsProjectManager = await UserManager.AddToRoleAsync(user3, projectManagerRoleName);
+
+                        if (assignUser3AsProjectManager.Succeeded)
+                        {
+                            Console.WriteLine($"{userName3} is assigned to role {projectManagerRoleName}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Could not assign {userName3} to role {projectManagerRoleName}");
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Could not save user {userName3}");
+                }
+            }
+
+            string userName4 = "dev1@pmsystem.com";
+
+            User user4 = await UserManager.FindByNameAsync(userName4);
+
+            if (user4 == null)
+            {
+                user4 = new User()
+                {
+                    UserName = userName4,
+                    Email = userName4,
+                    EmailConfirmed = true,
+                    FirstName = "Samuiel",
+                    LastName = "Flett",
+                };
+
+                IdentityResult createUser4 = await UserManager.CreateAsync(user4, "Pass123$");
+
+                if (createUser4.Succeeded)
+                {
+                    Console.WriteLine($"User {userName4} saved to database.");
+
+                    bool isUser4Developer = await UserManager.IsInRoleAsync(user4, developerRoleName);
+
+                    if (!isUser4Developer)
+                    {
+                        IdentityResult assignUser4AsDeveloper= await UserManager.AddToRoleAsync(user4, developerRoleName);
+
+                        if (assignUser4AsDeveloper.Succeeded)
+                        {
+                            Console.WriteLine($"{userName4} is assigned to role {developerRoleName}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Could not assign {userName4} to role {developerRoleName}");
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Could not save user {userName4}");
+                }
+            }
+            string userName5 = "dev2@pmsystem.com";
+
+            User user5 = await UserManager.FindByNameAsync(userName5);
+
+            if (user5 == null)
+            {
+                user5 = new User()
+                {
+                    UserName = userName5,
+                    Email = userName5,
+                    EmailConfirmed = true,
+                    FirstName = "Jack",
+                    LastName = "Bold",
+                };
+
+                IdentityResult createUser5 = await UserManager.CreateAsync(user5, "Pass123$");
+
+                if (createUser5.Succeeded)
+                {
+                    Console.WriteLine($"User {userName5} saved to database.");
+
+                    bool isUser5Developer = await UserManager.IsInRoleAsync(user5, developerRoleName);
+
+                    if (!isUser5Developer)
+                    {
+                        IdentityResult assignUser5AsDeveloper = await UserManager.AddToRoleAsync(user5, developerRoleName);
+
+                        if (assignUser5AsDeveloper.Succeeded)
+                        {
+                            Console.WriteLine($"{userName5} is assigned to role {developerRoleName}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Could not assign {userName5} to role {developerRoleName}");
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Could not save user {userName5}");
                 }
             }
         }

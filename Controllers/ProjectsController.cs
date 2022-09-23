@@ -85,7 +85,7 @@ namespace project_management_system.Controllers
             {
                 ProjectTask task = await DbContext.ProjectTasks.FirstOrDefaultAsync(t => t.Id == id);
                 User user = await UserManager.GetUserAsync(User);
-                if (task != null)
+                if(task.AssignedDeveloper == user && task != null)
                 {
                     task.RequiredHours = NewRequiredhours;
                     await DbContext.SaveChangesAsync();
@@ -105,7 +105,7 @@ namespace project_management_system.Controllers
             {
                 ProjectTask task = await DbContext.ProjectTasks.FirstOrDefaultAsync(t => t.Id == id);
                 User user = await UserManager.GetUserAsync(User);
-                if(task != null)
+                if(task.AssignedDeveloper == user && task != null)
                 {
                     task.Completed = true;
                     user.AssignedProjectTasks.Remove(task);
@@ -142,6 +142,22 @@ namespace project_management_system.Controllers
                 RedirectToAction("Index");
             }
             return RedirectToAction("Index"); 
+        }
+
+        [HttpGet,Authorize]
+        public async Task<IActionResult> CheckAssignedProjects()
+        {
+            try
+            {
+                User user = await UserManager.GetUserAsync(User);
+                List<Project> assignedProjects = DbContext.Projects.Where(p => p.AssignedDevelopers.Contains(user)).ToList();
+                return View(assignedProjects);
+            }
+            catch
+            {
+                RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
         }
     }
 }

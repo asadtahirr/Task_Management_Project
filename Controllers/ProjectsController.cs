@@ -135,6 +135,7 @@ namespace project_management_system.Controllers
                     comment.ProjectTask = projectTask;
                     comment.Body = commentContennt;
                     user.CreatedComments.Add(comment);
+                    await DbContext.SaveChangesAsync();
                 }
             }
             catch
@@ -152,6 +153,41 @@ namespace project_management_system.Controllers
                 User user = await UserManager.GetUserAsync(User);
                 List<Project> assignedProjects = DbContext.Projects.Where(p => p.AssignedDevelopers.Contains(user)).ToList();
                 return View(assignedProjects);
+            }
+            catch
+            {
+                RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet,Authorize]
+        public async Task<IActionResult> WatchingTask(string taskId)
+        {
+            try
+            {
+                ProjectTask projectTask = await DbContext.ProjectTasks.FirstOrDefaultAsync(t => t.Id == taskId);
+                return View(projectTask);
+            }
+            catch
+            {
+                RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost,Authorize]
+        public async Task<IActionResult> DeleteTask(string taskId)
+        {
+            try
+            {
+                ProjectTask projectTask = await DbContext.ProjectTasks.FirstOrDefaultAsync(t => t.Id == taskId);
+                User user = await UserManager.GetUserAsync(User);
+                if (projectTask.AssignedDeveloper == user)
+                {
+                    DbContext.ProjectTasks.Remove(projectTask);
+                }
+                await DbContext.SaveChangesAsync();
             }
             catch
             {

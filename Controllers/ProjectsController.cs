@@ -72,10 +72,10 @@ namespace project_management_system.Controllers
                     break;
             }
             int pageSize = 10;
-            return DbContext.Projects != null ?
-                          View(await PaginatedList<ProjectDetailsViewModel>.CreateAsync(viewModel.Projects.AsQueryable(), pageNumber ?? 1, pageSize)) :
-                          Problem("Entity set 'ApplicationDbContext.Projects'  is null.");
-            //return View(viewModel);
+            //return DbContext.Projects != null ?
+            //              View(await PaginatedList<ProjectDetailsViewModel>.CreateAsync(viewModel.Projects.AsQueryable(), pageNumber ?? 1, pageSize)) :
+            //              Problem("Entity set 'ApplicationDbContext.Projects'  is null.");
+            return View(viewModel.Projects);
         }
         
         [HttpPost,Authorize]

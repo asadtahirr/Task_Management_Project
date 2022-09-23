@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using project_management_system.Data;
 using project_management_system.Models;
@@ -11,10 +13,12 @@ namespace project_management_system.Controllers
     public class ProjectsController : Controller
     {
         public ApplicationDbContext DbContext { get; set; }
+        private UserManager<User> UserManager { get; set; }
 
-        public ProjectsController(ApplicationDbContext dbContext)
+        public ProjectsController(ApplicationDbContext dbContext, UserManager<User> userManager)
         {
-            DbContext = dbContext;  
+            DbContext = dbContext;
+            UserManager = userManager;
         }
 
         [HttpGet]
@@ -72,6 +76,72 @@ namespace project_management_system.Controllers
                           View(await PaginatedList<ProjectDetailsViewModel>.CreateAsync(viewModel.Projects.AsQueryable(), pageNumber ?? 1, pageSize)) :
                           Problem("Entity set 'ApplicationDbContext.Projects'  is null.");
             //return View(viewModel);
+        }
+        
+        [HttpPost,Authorize]
+        public async Task<IActionResult> AdjustRequiredHours(string id, int NewRequiredhours)
+        {
+            try
+            {
+                ProjectTask task = await DbContext.ProjectTasks.FirstOrDefaultAsync(t => t.Id == id);
+                User user = await UserManager.GetUserAsync(User);
+                if (task != null)
+                {
+                    task.RequiredHours = NewRequiredhours;
+                    await DbContext.SaveChangesAsync();
+                }
+            }
+            catch
+            {
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost,Authorize]
+        public async Task<IActionResult> MarkCompleted(string id)
+        {
+            try
+            {
+                ProjectTask task = await DbContext.ProjectTasks.FirstOrDefaultAsync(t => t.Id == id);
+                User user = await UserManager.GetUserAsync(User);
+                if(task != null)
+                {
+                    task.Completed = true;
+                    user.AssignedProjectTasks.Remove(task);
+                }
+                await DbContext.SaveChangesAsync();
+            }
+            catch
+            {
+                RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost, Authorize]
+        public async Task<IActionResult> AddComments(string taskId, string commentContennt)
+        {
+            try
+            {
+                User user = await UserManager.GetUserAsync(User);
+                Comment comment = new Comment();
+                ProjectTask projectTask = await DbContext.ProjectTasks.FirstOrDefaultAsync(t => t.Id == taskId);
+                if(projectTask != null)
+                {
+                    comment.CreatedById = user.Id;
+                    comment.CreatedBy = user;
+                    comment.TaskId = projectTask.Id;
+                    comment.ProjectTask = projectTask;
+                    comment.Body = commentContennt;
+                    user.CreatedComments.Add(comment);
+                }
+            }
+            catch
+            {
+                RedirectToAction("Index");
+            }
+            return RedirectToAction("Index"); 
         }
     }
 }

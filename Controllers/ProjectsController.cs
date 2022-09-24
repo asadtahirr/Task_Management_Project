@@ -119,8 +119,22 @@ namespace project_management_system.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Comment()
+        {
+            try
+            {
+                return View();
+            }
+            catch
+            {
+                RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
+        }
+
         [HttpPost, Authorize]
-        public async Task<IActionResult> AddComments(string taskId, string commentContennt)
+        public async Task<IActionResult> AddComments(string taskId, string Body)
         {
             try
             {
@@ -133,7 +147,7 @@ namespace project_management_system.Controllers
                     comment.CreatedBy = user;
                     comment.TaskId = projectTask.Id;
                     comment.ProjectTask = projectTask;
-                    comment.Body = commentContennt;
+                    comment.Body = Body;
                     user.CreatedComments.Add(comment);
                     await DbContext.SaveChangesAsync();
                 }

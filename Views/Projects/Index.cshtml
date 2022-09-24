@@ -88,6 +88,7 @@
                                 </td>
                                 <td>
                                     <input type="number" name="hours">
+                                    <a asp-action="WatchingTask" asp-route-taskId="@projectTask.Id">Watch</a> |
                                     <a asp-action="AdjustRequiredHours" asp-route-id="@projectTask.Id" asp-route-NewRequiredhours="hours">Adjust Hours</a> |
                                     <a asp-action="MarkCompleted" asp-route-id="@projectTask.Id">Mark As Completed</a>           
                                 </td>

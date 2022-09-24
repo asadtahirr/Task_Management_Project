@@ -119,11 +119,12 @@ namespace project_management_system.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Comment()
+        [HttpGet, Authorize]
+        public IActionResult Comment(string id)
         {
             try
             {
+                ViewData["TaskId"] = id;
                 return View();
             }
             catch
@@ -148,6 +149,7 @@ namespace project_management_system.Controllers
                     comment.TaskId = projectTask.Id;
                     comment.ProjectTask = projectTask;
                     comment.Body = Body;
+                    projectTask.Comments.Add(comment);
                     user.CreatedComments.Add(comment);
                     await DbContext.SaveChangesAsync();
                 }
@@ -175,7 +177,9 @@ namespace project_management_system.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet,Authorize]
+
+        //Watch the detail of the task.
+        [HttpGet, Authorize]
         public async Task<IActionResult> WatchingTask(string taskId)
         {
             try

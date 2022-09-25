@@ -1,0 +1,18 @@
+﻿
+<div>
+    <h1 class="text-center">Create new project</h1>
+
+    <form asp-controller="projects" asp-action="newproject" method="post">
+        <div>
+            <label for="title">Title (required):</label>
+            <input type="text" name="title"><br>
+        </div>
+
+        <div>
+            <label for="developer">Developers:</label><br>
+            <input type="text" name="developers">
+        </div>
+
+        <button>Submit</button>
+    </form>
+</div>

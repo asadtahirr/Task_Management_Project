@@ -183,5 +183,17 @@ namespace project_management_system.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [HttpGet,AllowAnonymous]
+        public IActionResult Welcome()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Privacy()
+        {
+            return View();
+        }
     }
 }

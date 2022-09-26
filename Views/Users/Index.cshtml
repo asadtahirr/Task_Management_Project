@@ -8,7 +8,9 @@
 {
     UserDetailsViewModel user = Model.Users[index];
 
-    <p>@(index + 1) | @user.Username | @user.Role |
+    <div class="mb-3">
+        <span>@(index + 1) | @user.Username | @(string.IsNullOrEmpty(user.Role) ? "Unassigned" : user.Role) |</span>
+        
         <span>
             @if (string.IsNullOrEmpty(user.Role))
             {
@@ -16,8 +18,10 @@
             }
             else
             {
-                <a asp-controller="users" asp-action="unassignrole" asp-route-id="@user.Id">Unassign Role</a>
+                <form class="d-inline" asp-controller="users" asp-action="unassignrole" asp-route-id="@user.Id">
+                    <input type="submit" value="Unassign">
+                </form>
             }
         </span>
-    </p>
+    </div>
 }

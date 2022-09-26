@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using project_management_system.Data;
 using project_management_system.Models;
+using project_management_system.Models.Users.InputModels;
 using project_management_system.Models.Users.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,8 @@ namespace project_management_system.Controllers
             UserManager<User> userManager,
             ApplicationDbContext dbContext,
             RoleManager<IdentityRole> roleManager
-        ) {
+        )
+        {
             UserManager = userManager;
             DbContext = dbContext;
             RoleManager = roleManager;
@@ -31,7 +33,7 @@ namespace project_management_system.Controllers
         {
             List<UserDetailsViewModel> users = await DbContext
                                         .Users
-                                        .GroupJoin(DbContext.UserRoles, user => user.Id, userRole => userRole.UserId, (user, userRole) => new { user,  userRole })
+                                        .GroupJoin(DbContext.UserRoles, user => user.Id, userRole => userRole.UserId, (user, userRole) => new { user, userRole })
                                         .SelectMany(result => result.userRole.DefaultIfEmpty(), (result, userRole) => new { result.user, userRole })
                                         .GroupJoin(DbContext.Roles,
                                                    result => result.userRole.RoleId,
@@ -67,7 +69,7 @@ namespace project_management_system.Controllers
             List<IdentityRole> roles = await RoleManager.Roles.Where(role => role.Name != "Administrator").ToListAsync();
 
             User user = await UserManager.FindByIdAsync(id);
-            
+
             AssignRoleViewModel viewModel = new AssignRoleViewModel()
             {
                 Roles = roles,
@@ -80,8 +82,52 @@ namespace project_management_system.Controllers
                     Username = user.UserName,
                 }
             };
-            
+
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AssignRole(
+            string id,
+            AssignRoleInputModel inputModel
+        )
+        {
+            User user = await UserManager.FindByIdAsync(id);
+
+            IdentityResult addRoleToUser = await UserManager.AddToRoleAsync(user, inputModel.Role);
+
+            if (addRoleToUser.Succeeded)
+            {
+                return Redirect("~/users/index");
+            }
+            else
+            {
+                return Redirect($"~/users/assignrole/{id}");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UnassignRole(string id)
+        {
+            User user = await UserManager.FindByIdAsync(id);
+            
+            IList<string> userRoles = await UserManager.GetRolesAsync(user);
+
+            IdentityResult removeRolesFromUser = await UserManager.RemoveFromRolesAsync(
+                user,
+                userRoles
+            );
+
+            if (removeRolesFromUser.Succeeded)
+            {
+                return Redirect("~/users/index");
+            }
+            else
+            {
+                Console.WriteLine($"Error: Could not unassign roles from user with id {id}");
+
+                return Redirect($"~/users/index");
+            }
         }
     }
 }

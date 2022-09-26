@@ -16,7 +16,7 @@
 <h1>Assign Role to @Model.User.Username</h1>
 
 <div>
-    <form>
+    <form asp-controller="users" asp-action="assignrole" method="post" asp-route-id="@Model.User.Id">
         <div>
             <label for="role">Select role (required):</label><br>
             <select name="role" asp-items="@selectItems"></select>

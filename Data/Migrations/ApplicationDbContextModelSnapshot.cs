@@ -297,7 +297,6 @@ namespace project_management_system.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AssignedDeveloperId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Completed")
@@ -355,27 +354,15 @@ namespace project_management_system.Data.Migrations
 
             modelBuilder.Entity("ProjectUser", b =>
                 {
-                    b.Property<string>("AssignedDevelopersId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AssignedProjectsId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("AssignedDevelopersId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("AssignedProjectsId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("AssignedDevelopersId1", "AssignedProjectsId1");
+                    b.Property<string>("DevelopersId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasIndex("AssignedDevelopersId");
+                    b.HasKey("AssignedProjectsId", "DevelopersId");
 
-                    b.HasIndex("AssignedProjectsId");
-
-                    b.HasIndex("AssignedProjectsId1");
+                    b.HasIndex("DevelopersId");
 
                     b.ToTable("ProjectUser");
                 });
@@ -484,9 +471,7 @@ namespace project_management_system.Data.Migrations
                 {
                     b.HasOne("project_management_system.Models.User", "AssignedDeveloper")
                         .WithMany("AssignedProjectTasks")
-                        .HasForeignKey("AssignedDeveloperId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AssignedDeveloperId");
 
                     b.HasOne("project_management_system.Models.User", "CreatedBy")
                         .WithMany("CreatedProjectTasks")
@@ -526,25 +511,13 @@ namespace project_management_system.Data.Migrations
                 {
                     b.HasOne("project_management_system.Models.Project", null)
                         .WithMany()
-                        .HasForeignKey("AssignedDevelopersId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("project_management_system.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("AssignedDevelopersId1")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("project_management_system.Models.User", null)
-                        .WithMany()
                         .HasForeignKey("AssignedProjectsId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("project_management_system.Models.Project", null)
+                    b.HasOne("project_management_system.Models.User", null)
                         .WithMany()
-                        .HasForeignKey("AssignedProjectsId1")
+                        .HasForeignKey("DevelopersId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

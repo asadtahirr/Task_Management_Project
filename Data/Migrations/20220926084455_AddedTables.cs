@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace project_management_system.Data.Migrations
 {
-    public partial class CreateTables : Migration
+    public partial class AddedTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -71,7 +71,7 @@ namespace project_management_system.Data.Migrations
                     RequiredHours = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Completed = table.Column<bool>(type: "bit", nullable: false),
                     ProjectId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AssignedDeveloperId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AssignedDeveloperId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatedById = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -83,8 +83,7 @@ namespace project_management_system.Data.Migrations
                         name: "FK_ProjectTasks_AspNetUsers_AssignedDeveloperId",
                         column: x => x.AssignedDeveloperId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ProjectTasks_AspNetUsers_CreatedById",
                         column: x => x.CreatedById,
@@ -103,35 +102,21 @@ namespace project_management_system.Data.Migrations
                 name: "ProjectUser",
                 columns: table => new
                 {
-                    AssignedDevelopersId1 = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AssignedProjectsId1 = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AssignedDevelopersId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AssignedProjectsId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    AssignedProjectsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DevelopersId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectUser", x => new { x.AssignedDevelopersId1, x.AssignedProjectsId1 });
+                    table.PrimaryKey("PK_ProjectUser", x => new { x.AssignedProjectsId, x.DevelopersId });
                     table.ForeignKey(
-                        name: "FK_ProjectUser_AspNetUsers_AssignedDevelopersId1",
-                        column: x => x.AssignedDevelopersId1,
+                        name: "FK_ProjectUser_AspNetUsers_DevelopersId",
+                        column: x => x.DevelopersId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ProjectUser_AspNetUsers_AssignedProjectsId",
+                        name: "FK_ProjectUser_Projects_AssignedProjectsId",
                         column: x => x.AssignedProjectsId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ProjectUser_Projects_AssignedDevelopersId",
-                        column: x => x.AssignedDevelopersId,
-                        principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ProjectUser_Projects_AssignedProjectsId1",
-                        column: x => x.AssignedProjectsId1,
                         principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -225,19 +210,9 @@ namespace project_management_system.Data.Migrations
                 column: "WatchersId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectUser_AssignedDevelopersId",
+                name: "IX_ProjectUser_DevelopersId",
                 table: "ProjectUser",
-                column: "AssignedDevelopersId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProjectUser_AssignedProjectsId",
-                table: "ProjectUser",
-                column: "AssignedProjectsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProjectUser_AssignedProjectsId1",
-                table: "ProjectUser",
-                column: "AssignedProjectsId1");
+                column: "DevelopersId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

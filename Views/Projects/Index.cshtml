@@ -1,4 +1,4 @@
-﻿@model PaginatedList<project_management_system.Models.Projects.ViewModels.ProjectDetailsViewModel>
+﻿@model List<project_management_system.Models.Projects.ViewModels.ProjectDetailsViewModel>
 
 @{
     List<string> myList = new List<string>() { "Hi", "Hello" };
@@ -18,10 +18,6 @@
             <th>
                 Created By
             </th>
-            @*<th>
-                Created By Id
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSort"]">Created Date</a>
-            </th>*@
             <th>
                 Number Of Project Tasks
             </th>
@@ -43,9 +39,6 @@
             <td>
                 @Html.DisplayFor(modelItem => projectDetails.CreatedByName)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => projectDetails.CreatedById)
-            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => @projectDetails.NumberOfProjectTasks)
             </td>
@@ -57,10 +50,10 @@
                                 Task Title
                             </th>
                             <th>
-                                <a asp-action="Index" asp-route-sortOrder="@ViewData["RequiredHoursSort"]">Required Hours</a>                  
+                                Required Hours
                             </th>
                             <th>
-                                <a asp-action="Index" asp-route-sortOrder="@ViewData["PrioritySort"]">Priorty</a>
+                                Priorty
                             </th>
                             <th>
                                 Completed
@@ -102,35 +95,6 @@
     } 
     </tbody>
 </table>
-    @*<div>
-        <p>@projectDetails.Id</p>
-        <p>@projectDetails.Title</p>
-        <p>@projectDetails.CreatedByName</p>
-        <p>@projectDetails.CreatedById</p>
-        <p>@projectDetails.NumberOfProjectTasks</p>
 
-        @foreach (ProjectTask projectTask in projectDetails.ProjectTasks)
-        {
-            <p>@projectTask.Title</p>
-            
-        }
-    </div>*@
-
-
-@{
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-}
-
-<a asp-action="Index"
-    asp-route-sortOrder="@ViewData["CurrentSort"]"
-    asp-route-pageNumber="@(Model.PageIndex - 1)"
-    class="btn btn-default @prevDisabled">
-    <button>Previous</button>
-</a>
-<a asp-action="Index"
-    asp-route-sortOrder="@ViewData["CurrentSort"]"
-    asp-route-pageNumber="@(Model.PageIndex + 1)"
-    class="btn btn-default @nextDisabled">
-    <button>Next</button>
-</a>
+<button>Previous</button>
+<button>Next</button>

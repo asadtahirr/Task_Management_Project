@@ -2,11 +2,22 @@
 
 <h1>Users</h1>
 
-<p>Serial | First name | Last name | Username | Email</p>
+<p>Serial | Username | Role</p>
 
 @for (int index = 0; index < Model.Users.Count; index++)
 {
     UserDetailsViewModel user = Model.Users[index];
 
-    <p>@(index + 1) | @user.FirstName | @user.LastName | @user.Username | @user.Email</p>
+    <p>@(index + 1) | @user.Username | @user.Role |
+        <span>
+            @if (string.IsNullOrEmpty(user.Role))
+            {
+                <a asp-controller="users" asp-action="assignrole" asp-route-id="@user.Id">Assign Role</a>
+            }
+            else
+            {
+                <a asp-controller="users" asp-action="unassignrole" asp-route-id="@user.Id">Unassign Role</a>
+            }
+        </span>
+    </p>
 }

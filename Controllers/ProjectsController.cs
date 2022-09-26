@@ -8,6 +8,7 @@ using project_management_system.Models.Projects.ViewModels;
 
 namespace project_management_system.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         public ApplicationDbContext DbContext { get; set; }
@@ -65,16 +66,9 @@ namespace project_management_system.Controllers
             try
             {
                 ProjectTask task = await DbContext.ProjectTasks.FirstOrDefaultAsync(t => t.Id == id);
-
-                User user = await UserManager.GetUserAsync(User);
-
-                if (task.AssignedDeveloper == user && task != null)
-                {
-                    task.Completed = true;
-                    user.AssignedProjectTasks.Remove(task);
-                }
-
+                task.Completed = true;
                 await DbContext.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
             catch
             {
@@ -194,6 +188,64 @@ namespace project_management_system.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult NewProjects()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> createProject(string Title)
+        {
+            
+            try
+            {
+                User user = await UserManager.GetUserAsync(User);
+                Project project = new Project();
+                project.Title = Title;
+                project.CreatedById = user.Id;
+                DbContext.Projects.Add(project);
+                await DbContext.SaveChangesAsync();
+            }
+            catch
+            {
+                RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult NewTask(string id)
+        {
+            ViewData["ProjectId"] = id;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> createProjectTask(string Title, int RequiredHours, Priority Priority, string id)
+        {      
+            try
+            {
+                User user = await UserManager.GetUserAsync(User);
+                ProjectTask projectTask = new ProjectTask();
+                projectTask.Title = Title;
+                projectTask.RequiredHours = RequiredHours;
+                projectTask.Priority = Priority;
+                projectTask.ProjectId = id;
+                projectTask.CreatedById = user.Id;
+                projectTask.AssignedDeveloperId = user.Id;
+                DbContext.ProjectTasks.Add(projectTask);
+                await DbContext.SaveChangesAsync();
+            }
+            catch
+            {
+                RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

@@ -2,11 +2,26 @@
 
 <h1>Users</h1>
 
-<p>Serial | First name | Last name | Username | Email</p>
+<p>Serial | Username | Role</p>
 
 @for (int index = 0; index < Model.Users.Count; index++)
 {
     UserDetailsViewModel user = Model.Users[index];
 
-    <p>@(index + 1) | @user.FirstName | @user.LastName | @user.Username | @user.Email</p>
+    <div class="mb-3">
+        <span>@(index + 1) | @user.Username | @(string.IsNullOrEmpty(user.Role) ? "Unassigned" : user.Role) |</span>
+        
+        <span>
+            @if (string.IsNullOrEmpty(user.Role))
+            {
+                <a asp-controller="users" asp-action="assignrole" asp-route-id="@user.Id">Assign Role</a>
+            }
+            else
+            {
+                <form class="d-inline" asp-controller="users" asp-action="unassignrole" asp-route-id="@user.Id">
+                    <input type="submit" value="Unassign">
+                </form>
+            }
+        </span>
+    </div>
 }

@@ -1,0 +1,27 @@
+﻿@model AssignRoleViewModel;
+@{
+    List<SelectListItem> selectItems = new List<SelectListItem>();
+
+    foreach (IdentityRole role in Model.Roles)
+    {
+        selectItems.Add(new SelectListItem()
+            {
+                Value = role.Name,
+                Text = role.Name
+            }
+        );
+    }
+}
+
+<h1>Assign Role to @Model.User.Username</h1>
+
+<div>
+    <form asp-controller="users" asp-action="assignrole" method="post" asp-route-id="@Model.User.Id">
+        <div>
+            <label for="role">Select role (required):</label><br>
+            <select name="role" asp-items="@selectItems"></select>
+        </div>
+
+        <button>Submit</button>
+    </form>
+</div>

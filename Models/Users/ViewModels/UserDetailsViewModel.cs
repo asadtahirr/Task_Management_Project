@@ -1,4 +1,6 @@
-﻿namespace project_management_system.Models.Users.ViewModels
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace project_management_system.Models.Users.ViewModels
 {
     public class UserDetailsViewModel
     {
@@ -7,5 +9,6 @@
         public string LastName { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
+        public string Role { get; set; }
     }
 }

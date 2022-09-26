@@ -27,6 +27,8 @@ namespace project_management_system.Controllers
             IndexViewModel viewModel = new IndexViewModel();
 
             viewModel.Projects = await DbContext.Projects
+                .Include(p => p.ProjectTasks)
+                .ThenInclude(pt => pt.AssignedDeveloper)
                 .Select(p => new ProjectDetailsViewModel()
                 {
                     Id = p.Id,
@@ -37,6 +39,7 @@ namespace project_management_system.Controllers
                     ProjectTasks = p.ProjectTasks
 
                 }).ToListAsync();
+
             return View(viewModel.Projects);
         }
 
@@ -230,25 +233,44 @@ namespace project_management_system.Controllers
         }
 
         [HttpGet, Authorize(Roles = "Project Manager")]
-        public IActionResult NewTask(string id)
+        public async Task<IActionResult> NewTask(string id)
         {
             ViewData["ProjectId"] = id;
-            return View();
+
+            List<string> developerEmails = (
+                    await DbContext.Projects
+                                    .Where(p => p.Id == id)
+                                    .Include(p => p.Developers)
+                                    .FirstOrDefaultAsync()
+                )
+                .Developers
+                .Select(d => d.Email)
+                .ToList();
+            
+            NewTaskViewModel viewModel = new NewTaskViewModel()
+            {
+                DeveloperEmails = developerEmails
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost, Authorize(Roles = "Project Manager")]
-        public async Task<IActionResult> createProjectTask(string Title, int RequiredHours, Priority Priority, string id)
-        {      
+        public async Task<IActionResult> createProjectTask(string id, NewTaskInputModel inputModel)
+        {
             try
             {
                 User user = await UserManager.GetUserAsync(User);
+
+                User assignedDeveloper = await UserManager.FindByEmailAsync(inputModel.AssignedDeveloperEmail);
+
                 ProjectTask projectTask = new ProjectTask();
-                projectTask.Title = Title;
-                projectTask.RequiredHours = RequiredHours;
-                projectTask.Priority = Priority;
+                projectTask.Title = inputModel.Title;
+                projectTask.RequiredHours = inputModel.RequiredHours;
+                projectTask.Priority = inputModel.Priority;
                 projectTask.ProjectId = id;
                 projectTask.CreatedById = user.Id;
-                projectTask.AssignedDeveloperId = user.Id;
+                projectTask.AssignedDeveloperId = assignedDeveloper.Id;
                 DbContext.ProjectTasks.Add(projectTask);
                 await DbContext.SaveChangesAsync();
             }

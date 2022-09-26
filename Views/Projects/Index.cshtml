@@ -1,4 +1,4 @@
-﻿@model IndexViewModel
+@model List<project_management_system.Models.Projects.ViewModels.ProjectDetailsViewModel>
 
 @{
     List<string> myList = new List<string>() { "Hi", "Hello" };
@@ -10,20 +10,13 @@
     <thead>
         <tr>
             <th>
-                Project Id
-            </th>
-            <th>
                 Project Title                 
             </th>
             <th>
                 Created By
             </th>
-            @*<th>
-                Created By Id
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSort"]">Created Date</a>
-            </th>*@
             <th>
-                Number Of Project Tasks
+                Operation
             </th>
             <th>
                 Tasks
@@ -31,23 +24,17 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (ProjectDetailsViewModel projectDetails in Model.Projects)
+    @foreach (ProjectDetailsViewModel projectDetails in Model)
     {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => projectDetails.Id)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => projectDetails.Title)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => projectDetails.CreatedByName)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => projectDetails.CreatedById)
-            </td>*@
             <td>
-                @Html.DisplayFor(modelItem => @projectDetails.NumberOfProjectTasks)
+                <a asp-action="NewTask" asp-route-id="@projectDetails.Id">Add Task</a>
             </td>
             <td>
                 <table class="table">
@@ -57,10 +44,10 @@
                                 Task Title
                             </th>
                             <th>
-                                <a asp-action="Index" asp-route-sortOrder="@ViewData["RequiredHoursSort"]">Required Hours</a>                  
+                                Required Hours
                             </th>
                             <th>
-                                <a asp-action="Index" asp-route-sortOrder="@ViewData["PrioritySort"]">Priorty</a>
+                                Priorty
                             </th>
                             <th>
                                 Completed
@@ -86,19 +73,25 @@
                                 <td>
                                     @projectTask.Completed
                                 </td>
-                                <td>
-                                    <input type="number" name="hours">
-                                    <a asp-action="WatchingTask" asp-route-taskId="@projectTask.Id">Watch</a>
-                                    <a asp-action="AdjustRequiredHours" asp-route-id="@projectTask.Id" asp-route-NewRequiredhours="hours">Adjust Hours</a> |
-                                    <a asp-action="MarkCompleted" asp-route-id="@projectTask.Id">Mark As Completed</a>           
+                                <td>                    
+                                    <form asp-action="AdjustRequiredHours" asp-route-id="@projectTask.Id" asp-route-NewRequiredhours="hours" method="post">
+                                        <input type="number" name="NewRequiredhours"><br />
+                                        <button>Adjust Hours</button>
+                                     </form>
+                                    <a asp-action="WatchingTask" asp-route-taskId="@projectTask.Id"><button>Watch</button></a>
+                                    <form asp-action="MarkCompleted" asp-route-id="@projectTask.Id" method="post"><button>Mark As Completed</button></form> 
+                                    <form asp-action="DeleteTask" asp-route-taskId="@projectTask.Id" method="post"><button>Delete Task</button></form>
                                 </td>
                             }
                         </tr>                      
                     </tbody>
                 </table>               
             </td>
-
+            
         </tr>
     } 
     </tbody>
 </table>
+
+<button>Previous</button>
+<button>Next</button>

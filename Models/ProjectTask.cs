@@ -23,7 +23,7 @@ namespace project_management_system.Models
         public virtual Project Project { get; set; }
 
         [ForeignKey("AssignedDeveloper")]
-        public string AssignedDeveloperId { get; set; }
+        public string? AssignedDeveloperId { get; set; }
 
         [InverseProperty("AssignedProjectTasks")]
         public virtual User AssignedDeveloper { get; set; }

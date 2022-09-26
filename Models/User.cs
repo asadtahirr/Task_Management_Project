@@ -10,7 +10,7 @@ namespace project_management_system.Models
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
-        [InverseProperty("AssignedDevelopers")]
+        [InverseProperty("Developers")]
         public virtual List<Project> AssignedProjects { get; set; }
 
         [InverseProperty("AssignedDeveloper")]

@@ -32,27 +32,15 @@ namespace project_management_system.Data
 
             builder.Entity("ProjectUser", b =>
             {
-                b.HasOne("project_management_system.Models.User", null)
-                    .WithMany()
-                    .HasForeignKey("AssignedProjectsId")
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .IsRequired();
-
                 b.HasOne("project_management_system.Models.Project", null)
-                    .WithMany()
-                    .HasForeignKey("AssignedProjectsId1")
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .IsRequired();
-
-                b.HasOne("project_management_system.Models.Project", null)
-                    .WithMany()
-                    .HasForeignKey("AssignedDevelopersId")
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("AssignedProjectsId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                 b.HasOne("project_management_system.Models.User", null)
                     .WithMany()
-                    .HasForeignKey("AssignedDevelopersId1")
+                    .HasForeignKey("DevelopersId")
                     .OnDelete(DeleteBehavior.Restrict)
                     .IsRequired();
             });

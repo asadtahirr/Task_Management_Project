@@ -53,14 +53,17 @@
                                 Completed
                             </th>
                             <th>
+                                Developer
+                            </th>
+                            <th>
                                 Operation
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            @foreach (ProjectTask projectTask in projectDetails.ProjectTasks)
-                            {
+                        @foreach (ProjectTask projectTask in projectDetails.ProjectTasks)
+                        {
+                            <tr>
                                 <td>
                                     @projectTask.Title
                                 </td>  
@@ -73,17 +76,20 @@
                                 <td>
                                     @projectTask.Completed
                                 </td>
+                                <td>
+                                    @projectTask.AssignedDeveloper.Email
+                                </td>
                                 <td>                    
                                     <form asp-action="AdjustRequiredHours" asp-route-id="@projectTask.Id" asp-route-NewRequiredhours="hours" method="post">
                                         <input type="number" name="NewRequiredhours"><br />
                                         <button>Adjust Hours</button>
-                                     </form>
+                                        </form>
                                     <a asp-action="WatchingTask" asp-route-taskId="@projectTask.Id"><button>Watch</button></a>
                                     <form asp-action="MarkCompleted" asp-route-id="@projectTask.Id" method="post"><button>Mark As Completed</button></form> 
                                     <form asp-action="DeleteTask" asp-route-taskId="@projectTask.Id" method="post"><button>Delete Task</button></form>
                                 </td>
-                            }
-                        </tr>                      
+                            </tr>                      
+                        }
                     </tbody>
                 </table>               
             </td>
